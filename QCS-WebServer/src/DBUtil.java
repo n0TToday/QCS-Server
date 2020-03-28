@@ -1,6 +1,5 @@
 
 import java.sql.*;
-
 public class DBUtil {
     public static final String url = "jdbc:mysql://127.0.0.1:3306/qust?characterEncoding=utf8";
     public static final String driver = "com.mysql.jdbc.Driver";
@@ -10,7 +9,7 @@ public class DBUtil {
     public PreparedStatement preparedStatement;
 
     //连接数据库
-    public void JDBCUtil(String sql) {
+    public DBUtil(String sql) {
         // TODO Auto-generated constructor stub
         try {
             Class.forName(driver);
@@ -51,6 +50,8 @@ public class DBUtil {
         }
     }
 
+
+
     /**
      * 测试工具连接数据库是否成功
      *
@@ -59,5 +60,4 @@ public class DBUtil {
     public static void main(String[] args) {
 
     }
-
 }
