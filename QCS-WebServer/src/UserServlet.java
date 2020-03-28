@@ -15,12 +15,18 @@ public class UserServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter printWriter = response.getWriter();
         String method = request.getParameter("method");
+        String userid;
+        String username;
+        String userpwd;
+        String stats;
+        String newpwd;
+
         switch (method) {
 //            注册
             case "regist":
-                String userid = request.getParameter("userid");
-                String username = request.getParameter("username");
-                String userpwd = request.getParameter("userpwd");
+                userid = request.getParameter("userid");
+                username = request.getParameter("username");
+                userpwd = request.getParameter("userpwd");
                 if (User.regist(userid, username, userpwd)) {
                     System.out.println("注册成功");
                     printWriter.write("true");
@@ -37,7 +43,7 @@ public class UserServlet extends HttpServlet {
                 userpwd = request.getParameter("userpwd");
                 userid = User.login(username);
                 if (userid != "false") {
-                    String stats = User.selectpwd(userid, userpwd);
+                    stats = User.selectpwd(userid, userpwd);
                     if (stats != "false") {
                         printWriter.write(userid);
                     } else {
@@ -59,12 +65,23 @@ public class UserServlet extends HttpServlet {
                 }
                 break;
 
+//            检查用户名重复
+            case "checkusername":
+                username = request.getParameter("username");
+                 stats = User.login(username);
+                if (stats != "false") {
+                    printWriter.write("false");
+                } else {
+                    printWriter.write("true");
+                }
+                break;
+
 //            修改密码
             case "updatepwd":
                 userid = request.getParameter("userid");
                 userpwd = request.getParameter("oldpwd");
-                String newpwd = request.getParameter("newpwd");
-                String stats = User.selectpwd(userid, userpwd);
+                newpwd = request.getParameter("newpwd");
+                 stats = User.selectpwd(userid, userpwd);
                 if (stats != "false") {
                     stats = User.updatepwd(userid, newpwd);
                     if (stats != "false") {
