@@ -33,6 +33,7 @@ public class UserServlet extends HttpServlet {
 		String stats;
 		String newpwd;
 		String registdate;
+		String temp;
 
 		switch (method) {
 //            注册
@@ -41,14 +42,18 @@ public class UserServlet extends HttpServlet {
 			username = request.getParameter("username");
 			userpwd = request.getParameter("userpwd");
 			registdate = request.getParameter("registdate");
-			if (User.login(username) == "false") {
-				if (User.regist(userid, username, userpwd, registdate) == "true") {
+			temp = User.login(username);
+			if (temp == "false") {
+				temp = User.regist(userid, username, userpwd, registdate);
+				if (temp == "true") {
 					System.out.println("注册成功");
 					printWriter.write("true");
+					Log.creatLog(null, method, username, userpwd, temp);
 				} else {
 					System.out.println("注册失败");
 					printWriter.write("false");
 				}
+				
 			} else {
 				System.out.println("用户名已被注册");
 				printWriter.write("usernamefalse");
@@ -64,13 +69,18 @@ public class UserServlet extends HttpServlet {
 			if (userid != "false") {
 				stats = User.selectpwd(userid, userpwd);
 				if (stats != "false") {
+					temp = "true";
 					printWriter.write(userid);
+					Log.creatLog(username, method, userid, null, temp);
 				} else {
+					temp = "pwdfalse";
 					printWriter.write("pwdfalse");
 				}
+				
 			} else {
 				printWriter.write("usernamefalse");
 			}
+			
 			break;
 
 //            查找用户名
@@ -100,11 +110,12 @@ public class UserServlet extends HttpServlet {
 			userid = request.getParameter("userid");
 			userpwd = request.getParameter("oldpwd");
 			newpwd = request.getParameter("newpwd");
-			stats = User.selectpwd(userid, userpwd);
-			if (stats != "false") {
-				stats = User.updatepwd(userid, newpwd);
-				if (stats != "false") {
+			temp = User.selectpwd(userid, userpwd);
+			if (temp != "false") {
+				temp = User.updatepwd(userid, newpwd);
+				if (temp != "false") {
 					printWriter.write("true");
+					Log.creatLog(userid, method, userpwd, newpwd, temp);
 				} else {
 					printWriter.write("updatepwdfalse");
 				}
@@ -112,16 +123,12 @@ public class UserServlet extends HttpServlet {
 				printWriter.write("oldpwdfalse");
 			}
 			break;
+			
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
