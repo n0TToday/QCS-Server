@@ -102,8 +102,8 @@ public class User {
 		DBUtil dbUtil = new DBUtil(sql);
 		String flag = "false";
 		try {
-			dbUtil.preparedStatement.setString(1, userid);
-			dbUtil.preparedStatement.setString(2, userpwd);
+			dbUtil.preparedStatement.setString(1, userpwd);
+			dbUtil.preparedStatement.setString(2, userid);
 			int i = dbUtil.preparedStatement.executeUpdate();
 			if (i > 0) {
 				System.out.println("ĞŞ¸ÄÃÜÂë³É¹¦");
