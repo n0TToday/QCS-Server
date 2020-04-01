@@ -71,7 +71,7 @@ public class UserServlet extends HttpServlet {
 				if (stats != "false") {
 					temp = "true";
 					printWriter.write(userid);
-					Log.creatLog(username, method, userid, null, temp);
+					Log.creatLog(userid, method, username, null, temp);
 				} else {
 					temp = "pwdfalse";
 					printWriter.write("pwdfalse");

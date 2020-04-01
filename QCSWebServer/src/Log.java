@@ -14,7 +14,7 @@ public class Log {
 //	记录Log
 	public static String creatLog(String loguserid, String logmethod, String logthing,String logdata,String logresult) {
 		String logdate = logDate();
-		String sql = "insert into `loginfo`(logdate,loguserid,logmethod,logthing,,logdata,logresult) value(?,?,?,?,?,?)";
+		String sql = "insert into `loginfo`(logdate,loguserid,logmethod,logthing,logdata,logresult) value(?,?,?,?,?,?)";
 		DBUtil dbUtil = new DBUtil(sql);
 		String flag = "false";
 		try {
@@ -23,7 +23,7 @@ public class Log {
 			dbUtil.preparedStatement.setString(3, logmethod);
 			dbUtil.preparedStatement.setString(4, logthing);
 			dbUtil.preparedStatement.setString(5, logdata);
-			dbUtil.preparedStatement.setString(5, logresult);
+			dbUtil.preparedStatement.setString(6, logresult);
 			int i = dbUtil.preparedStatement.executeUpdate();
 			if (i > 0) {
 				System.out.println("Log记录成功");
