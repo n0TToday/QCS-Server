@@ -2,14 +2,14 @@ import java.sql.ResultSet;
 
 public class Card {
 //	创建卡
-	public static String creatCard(String cardid, String cardstats, String cardbalance, String cardusername, String carduserid) {
+	public static String creatCard(String cardid, String cardstats, int cardbalance, String cardusername, String carduserid) {
 		String sql = "insert into `cardinfo`(cardid,cardstats,cardbalance,cardusername,carduserid) value(?,?,?,?,?)";
 		DBUtil dbUtil = new DBUtil(sql);
 		String flag = "false";
 		try {
 			dbUtil.preparedStatement.setString(1, cardid);
 			dbUtil.preparedStatement.setString(2, cardstats);
-			dbUtil.preparedStatement.setString(3, cardbalance);
+			dbUtil.preparedStatement.setInt(3, cardbalance);
 			dbUtil.preparedStatement.setString(4, cardusername);
 			dbUtil.preparedStatement.setString(5, carduserid);
 			int i = dbUtil.preparedStatement.executeUpdate();
@@ -29,8 +29,8 @@ public class Card {
 	}
 	
 //	查询余额
-	public static String getbalance(String cardid) {
-		String flag = "false";
+	public static int getbalance(String cardid) {
+		int flag = -1;
 		boolean p = false;
 		String sql = "select * from `cardinfo` where cardid=?";
 		DBUtil dbUtil = new DBUtil(sql);
@@ -39,7 +39,7 @@ public class Card {
 			ResultSet i = dbUtil.preparedStatement.executeQuery();
 			p = i.first();
 			if (p) {
-				flag = i.getString("cardbalance");
+				flag = i.getInt("cardbalance");
 			}
 			System.out.println("余额:" + flag);
 		} catch (Exception e) {
@@ -73,16 +73,15 @@ public class Card {
 	}
 	
 //	充值卡
-	public static String rechargeCard(String cardid, String cardbalance) {
+	public static String rechargeCard(String cardid, int cardbalance) {
 		String sql = "UPDATE cardinfo SET cardbalance = ? WHERE cardid = ?";
 		DBUtil dbUtil = new DBUtil(sql);
 		String flag = "false";
 		try {
-			dbUtil.preparedStatement.setString(1, cardbalance);
+			dbUtil.preparedStatement.setInt(1, cardbalance);
 			dbUtil.preparedStatement.setString(2, cardid);
 			int i = dbUtil.preparedStatement.executeUpdate();
 			if (i > 0) {
-				System.out.printf("充值成功,充值后金额为",cardbalance);
 				flag = "true";
 			} else {
 				System.out.println("充值异常");
@@ -122,7 +121,7 @@ public class Card {
 	
 //	注销卡
 	public static String deleteCard(String cardid) {
-		String sql = "delete * from `cardinfo` where cardid=?";
+		String sql = "delete from `cardinfo` where cardid=?";
 		DBUtil dbUtil = new DBUtil(sql);
 		String flag = "false";
 		try {

@@ -23,11 +23,11 @@ public class CardServlet extends HttpServlet {
 		String userid = request.getParameter("userid");
 		String cardid;
 		String cardstats;
-		String cardbalance;
-		String rechargenum;
+		int cardbalance;
+		int rechargenum;
+		int nowbalance;
 		String cardusername;
 		String carduserid;
-		String nowbalance;
 		String nowstats;
 		String thing;
 		String temp;
@@ -36,7 +36,7 @@ public class CardServlet extends HttpServlet {
 		case "creatCard":
 			cardid = request.getParameter("cardid");
 			cardstats = "1";
-			cardbalance = "0";
+			cardbalance = 0;
 			cardusername = request.getParameter("cardusername");
 			carduserid = request.getParameter("carduserid");
 			temp = Card.creatCard(cardid, cardstats, cardbalance, cardusername, carduserid);
@@ -53,13 +53,15 @@ public class CardServlet extends HttpServlet {
 //		充值
 		case "rechargeCard":
 			cardid = request.getParameter("cardid");
-			rechargenum = request.getParameter("rechargenum");
+			rechargenum = Integer.parseInt(request.getParameter("rechargenum"));
 			nowbalance = Card.getbalance(cardid);
 			cardbalance = nowbalance + rechargenum;
 			temp = Card.rechargeCard(cardid, cardbalance);
 			if (temp == "true") {
-				printWriter.write("true");
-				Log.creatLog(userid, method, cardid, rechargenum,temp);
+				nowbalance = Card.getbalance(cardid);
+				printWriter.write(Integer.toString(nowbalance));
+				System.out.println("充值成功,充值后金额为:"+ nowbalance);
+				Log.creatLog(userid, method, cardid, Integer.toString(rechargenum),temp);
 			} else {
 				printWriter.write("false");
 			}
