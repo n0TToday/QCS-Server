@@ -1,5 +1,8 @@
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Log {
 	// 获取当前系统时间
@@ -40,5 +43,30 @@ public class Log {
 		return flag;
 	}
 	
-	
+//	加载日志
+	public static List<LoadLog> loadlog() {
+		List<LoadLog> list = new ArrayList<LoadLog>();
+		String sql = "select * from `loginfo`";
+		DBUtil dbUtil = new DBUtil(sql);
+		ResultSet resultSet = null;
+		try {
+			resultSet = dbUtil.preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				LoadLog loadlog = new LoadLog();
+				loadlog.setLogdate(resultSet.getString("logdate"));
+				loadlog.setLoguserid(resultSet.getString("loguserid"));
+				loadlog.setLogmethod(resultSet.getString("logmethod"));
+				loadlog.setLogthing(resultSet.getString("logthing"));
+				loadlog.setLogdata(resultSet.getString("logdata"));
+				loadlog.setLogresult(resultSet.getString("logresult"));
+				list.add(loadlog);
+			}
+			System.out.println("查询日志成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			DBUtil.close(null, dbUtil.preparedStatement, dbUtil.connection);
+		}
+		return list;
+	}
 }
