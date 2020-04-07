@@ -1,0 +1,8 @@
+diff a/QCSWebServer/src/User.java b/QCSWebServer/src/User.java	(rejected hunks)
+@@ -1,4 +1,6 @@
+ import java.sql.ResultSet;
++import java.util.ArrayList;
++import java.util.List;
+ 
+ public class User {
+ 	// ע��
