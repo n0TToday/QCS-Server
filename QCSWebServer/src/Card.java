@@ -119,6 +119,35 @@ public class Card {
 		return flag;
 	}
 	
+//	创建卡交易
+	public static String createDeal(String cardid, int cardbalance,String cardid2,int cardbalance2) {
+		String sql = "UPDATE cardinfo SET cardbalance = ? WHERE cardid = ?";
+		String sql2 = "UPDATE cardinfo SET cardbalance = ? WHERE cardid = ?";
+		DBUtil dbUtil = new DBUtil(sql);
+		DBUtil dbUtil2 = new DBUtil(sql2);
+		String flag = "false";
+		try {
+			dbUtil.preparedStatement.setInt(1, cardbalance);
+			dbUtil.preparedStatement.setString(2, cardid);
+			dbUtil2.preparedStatement.setInt(1, cardbalance);
+			dbUtil2.preparedStatement.setString(2, cardid);
+			int i = dbUtil.preparedStatement.executeUpdate();
+			int i2 = dbUtil2.preparedStatement.executeUpdate();
+			if (i > 0&&i2 > 0) {
+				flag = "true";
+			} else {
+				System.out.println("充值异常");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(null, dbUtil.preparedStatement, dbUtil.connection);
+			DBUtil.close(null, dbUtil2.preparedStatement, dbUtil2.connection);
+		}
+		return flag;
+	}
+	
 //	注销卡
 	public static String deleteCard(String cardid) {
 		String sql = "delete from `cardinfo` where cardid=?";
